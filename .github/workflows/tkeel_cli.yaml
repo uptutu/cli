@@ -77,6 +77,7 @@ jobs:
           [ ! -z "${{ env.REL_VERSION }}" ] && echo "${{ env.REL_VERSION }}" > "${{ env.ARCHIVE_OUTDIR }}/release_version.txt"
       - name: upload
         uses: actions/upload-artifact@v2
+        run: ls ${{ env.ARCHIVE_OUTDIR }}
         with:
           name: my-artifact
           path: ${{ env.ARCHIVE_OUTDIR }}
@@ -138,7 +139,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: ${{ steps.download.outputs.download-path }}/${{ env.ARCHIVE_OUTDIR }}/${{ matrix.project }}
+          asset_path: ${{ steps.download.outputs.download-path }}/${{ matrix.project }}
           asset_name: ${{ matrix.project }}
           asset_content_type: application/octet-stream
 
