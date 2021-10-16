@@ -21,7 +21,7 @@ jobs:
       GOOS: ${{ matrix.target_os }}
       GOARCH: ${{ matrix.target_arch }}
       GOPROXY: https://proxy.golang.org
-      ARCHIVE_OUTDIR: dist/archives
+      ARCHIVE_OUTDIR: /dist/archives
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest, macOS-latest ]
@@ -80,11 +80,8 @@ jobs:
         with:
           name: my-artifact
           path: |
-            ${{ env.ARCHIVE_OUTDIR }}/tkeel
-            ${{ env.ARCHIVE_OUTDIR }}/tkeel.exe
-            ${{ env.ARCHIVE_OUTDIR }}/tkeel.tar.gz
-            ${{ env.ARCHIVE_OUTDIR }}/tkeel.zip
-            if-no-files-found: error
+            ${{ env.ARCHIVE_OUTDIR }}/${{ matrix.target_os }}_${{ matrix.target_arch }}/release/tkeel
+            ${{ env.ARCHIVE_OUTDIR }}/${{ matrix.target_os }}_${{ matrix.target_arch }}/release/tkeel.exe
           if-no-files-found: error
       - name: Upload test results
         if: always()
