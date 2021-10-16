@@ -138,7 +138,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: ${{ steps.download.outputs.download-path }}/${{ matrix.project }}
+          asset_path: ${{ steps.download.outputs.download-path }}/${{ env.ARCHIVE_OUTDIR }}/${{ matrix.project }}
           asset_name: ${{ matrix.project }}
           asset_content_type: application/octet-stream
 
