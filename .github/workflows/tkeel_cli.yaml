@@ -86,9 +86,6 @@ jobs:
           path: |
             ${{ env.ARCHIVE_OUTDIR }}/tkeel_${{ matrix.target_os }}_${{ matrix.target_arch }}.tar.gz
             ${{ env.ARCHIVE_OUTDIR }}/tkeel_${{ matrix.target_os }}_${{ matrix.target_arch }}.zip
-            ${{ env.ARCHIVE_OUTDIR }}/${{ matrix.target_os }}_${{ matrix.target_arch }}/release/tkeel
-            ${{ env.ARCHIVE_OUTDIR }}/${{ matrix.target_os }}_${{ matrix.target_arch }}/release/tkeel.exe
-          if-no-files-found: error
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@master
@@ -128,10 +125,8 @@ jobs:
       fail-fast: true
       matrix:
         project:
-          - tkeel
-          - tkeel.exe
-          - tkeel.tar.gz
-          - tkeel.zip
+          - tkeel_${{ matrix.target_os }}_${{ matrix.target_arch }}.tar.gz
+          - tkeel_${{ matrix.target_os }}_${{ matrix.target_arch }}.zip
     steps:
       - name: Download Artifact
         id: download
