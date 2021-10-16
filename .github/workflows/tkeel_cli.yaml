@@ -77,10 +77,14 @@ jobs:
           [ ! -z "${{ env.REL_VERSION }}" ] && echo "${{ env.REL_VERSION }}" > "${{ env.ARCHIVE_OUTDIR }}/release_version.txt"
       - name: upload
         uses: actions/upload-artifact@v2
-        run: ls ${{ env.ARCHIVE_OUTDIR }}
         with:
           name: my-artifact
-          path: ${{ env.ARCHIVE_OUTDIR }}
+          path: |
+            ${{ env.ARCHIVE_OUTDIR }}/tkeel
+            ${{ env.ARCHIVE_OUTDIR }}/tkeel.exe
+            ${{ env.ARCHIVE_OUTDIR }}/tkeel.tar.gz
+            ${{ env.ARCHIVE_OUTDIR }}/tkeel.zip
+            if-no-files-found: error
           if-no-files-found: error
       - name: Upload test results
         if: always()
@@ -132,7 +136,8 @@ jobs:
         with:
           name: my-artifact
           path: ${{ env.ARCHIVE_OUTDIR }}
-
+      - name: ls download dir
+        run: ls ${{ steps.download.outputs.download-path }}
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1.0.1
         env:
