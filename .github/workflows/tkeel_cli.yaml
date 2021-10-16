@@ -71,10 +71,6 @@ jobs:
         run: |
           mkdir -p ${{ env.ARCHIVE_OUTDIR }}
           make release GOOS=${{ matrix.target_os }} GOARCH=${{ matrix.target_arch }} ARCHIVE_OUT_DIR=${{ env.ARCHIVE_OUTDIR }}
-      - name: List Arch
-        run: ls ${{ env.ARCHIVE_OUTDIR }}
-      - name: List dist
-        run: ls dist
       - name: Create release_version.txt
         if: matrix.target_arch == 'amd64' && matrix.target_os == 'linux'
         run: |
@@ -125,8 +121,11 @@ jobs:
       fail-fast: true
       matrix:
         project:
-          - tkeel_${{ matrix.target_os }}_${{ matrix.target_arch }}.tar.gz
-          - tkeel_${{ matrix.target_os }}_${{ matrix.target_arch }}.zip
+          - tkeel_darwin_amd64.tar.gz
+          - tkeel_linux_amd64.tar.gz
+          - tkeel_linux_arm.tar.gz
+          - tkeel_linux_arm64.tar.gz
+          - tkeel_windows_amd64.zip
     steps:
       - name: Download Artifact
         id: download
@@ -134,8 +133,6 @@ jobs:
         with:
           name: my-artifact
           path: ${{ env.ARCHIVE_OUTDIR }}
-      - name: ls download dir
-        run: ls ${{ steps.download.outputs.download-path }}
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1.0.1
         env:
