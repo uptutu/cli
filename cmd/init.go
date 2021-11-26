@@ -23,6 +23,7 @@ var (
 	enableMTLS     bool
 	enableHA       bool
 	values         []string
+	charts         []string
 )
 
 var InitCmd = &cobra.Command{
@@ -49,6 +50,7 @@ tkeel init --wait --timeout 600
 				Wait:       wait,
 				Timeout:    timeout,
 				DebugMode:  debugMode,
+				Wants:      charts,
 			}
 			err := kubernetes.Init(config)
 			if err != nil {
@@ -71,5 +73,6 @@ func init() {
 	InitCmd.Flags().UintVarP(&timeout, "timeout", "", 300, "The wait timeout for the Kubernetes installation")
 	InitCmd.Flags().BoolVarP(&debugMode, "debug", "", false, "The log mode")
 	InitCmd.Flags().BoolP("help", "h", false, "Print this help message")
+	InitCmd.Flags().StringSliceVarP(&charts, "want", "w", []string{}, "init what u want")
 	RootCmd.AddCommand(InitCmd)
 }

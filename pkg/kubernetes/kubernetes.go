@@ -47,6 +47,7 @@ type InitConfiguration struct {
 	Wait       bool
 	Timeout    uint
 	DebugMode  bool
+	Wants      []string
 }
 
 // Init deploys the tKeel operator using the supplied runtime version.
@@ -57,8 +58,13 @@ func Init(config InitConfiguration) (err error) {
 		return err
 	}
 
-	err = deploy(config, controlPlanePlugins)
-	if err != nil {
+	if len(config.Wants) == 0 {
+		if err := deploy(config, controlPlanePlugins); err != nil {
+			return err
+		}
+	}
+
+	if err := deploy(config, config.Wants); err != nil {
 		return err
 	}
 
